@@ -96,12 +96,10 @@ class AuthController extends Controller
             ], 422);
         }
 
-        // Mark email as verified if not already
         if (!$user->hasVerifiedEmail()) {
             $user->markEmailAsVerified();
         }
 
-        // Create token
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
@@ -127,7 +125,6 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->firstOrFail();
 
-        // Check if locked
         if ($user->isMfaLocked()) {
             return response()->json([
                 'success' => false,
